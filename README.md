@@ -1,1 +1,1 @@
-# ORF-Locator
+# Open Reading Frame Locator
