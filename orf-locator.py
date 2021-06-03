@@ -49,7 +49,6 @@ def findORF(file, frame):
     DNA_sequence = file.read().upper().replace('\n','')
     seq_length = len(DNA_sequence)
     
-    longestORF = 0
     count = 0
     openframe = False
     
@@ -67,10 +66,6 @@ def findORF(file, frame):
                 if codon >= 30:
                     preview.insert(END, "Start position: " + str(start) + "  " + "End position: " + str(stop) + " " + 
                                    "Length in nucleotides = " + str(stop-start+1) + "\n")
-                    if count > longestORF:
-                        longestORF = count 
-                        startORF = start
-                        stopORF = stop
                 openframe = False
             count = 0
         else:
