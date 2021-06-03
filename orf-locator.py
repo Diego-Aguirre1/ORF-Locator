@@ -86,7 +86,7 @@ submit_file = Button(root, text="Submit", command=submit)
 submit_file.grid(column=0, row=1, sticky='w', padx=100, pady=10)
 # DNA Frames Options
 frame_options = OptionMenu(root, var, *FRAMES)
-frame_options.grid(column=0, row=1, sticky='w', padx=190, pady=10)
+frame_options.grid(column=0, row=1, sticky='w', padx=170, pady=10)
 
 root.mainloop()
 
