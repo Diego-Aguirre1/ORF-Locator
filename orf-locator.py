@@ -9,7 +9,7 @@ global frames_number
 root = Tk()
 user = getpass.getuser()
 # set window size
-root.geometry("650x400")
+root.geometry("650x300")
 
 # set window title
 root.title("Open Reading Frame Locator")
@@ -18,19 +18,12 @@ root.title("Open Reading Frame Locator")
 preview = tk.Text(root, height=12)
 preview.grid(column=0, row=0, sticky='nsew')
 
-# results text box
-results = tk.Text(root, height=5)
-results.grid(column=0, row=13, sticky='nsew')
-
 # DNA frames
 FRAMES = [1, 2, 3]
 var = StringVar(root)
 # sets option to the first index (frame 1)
 var.set(FRAMES[0])
 
-def redirector(output):
-    results.insert(INSERT, output)
-    
 def open_file():
     global opened_file
     global frames_number
@@ -49,12 +42,6 @@ def open_file():
         )
     
     opened_file = sequence
-    
-    # read contents of the file to preview text window
-    preview.insert('1.0', opened_file.readlines())
-    
-
-
 
 def findORF(file, frame):
 
@@ -78,15 +65,10 @@ def findORF(file, frame):
                 stop = nucleotide + 3
                 codon = (stop-start+1)//3
                 if codon >= 30:
-                    redirector((
-                        start, "..",
-                        stop, "..",
-                        codon, "codons ..",
-                        "length in nucleotides =",
-                        stop-start+1)
-                        )
+                    preview.insert(END, "Start position: " + str(start) + "  " + "End position: " + str(stop) + " " + 
+                                   "Length in nucleotides = " + str(stop-start+1) + "\n")
                     if count > longestORF:
-                        longestORF = count
+                        longestORF = count 
                         startORF = start
                         stopORF = stop
                 openframe = False
@@ -100,7 +82,6 @@ def submit():
     global frames_number
     frames_number = int(var.get())
     findORF(opened_file, frames_number)
-    results.insert(INSERT, opened_file.readlines())
 
 # Open File Button
 open_button = Button(root, text="Open a File", command=open_file)
