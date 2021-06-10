@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import *
 from tkinter import filedialog
 import getpass
+import amino_dictionary
 
 global opened_file
 global frames_number
@@ -77,7 +78,23 @@ def submit():
     global frames_number
     frames_number = int(var.get())
     findORF(opened_file, frames_number)
-
+    
+def translate():
+    global opened_file
+    comment = opened_file.readline()
+    DNA_sequence = opened_file.read().upper().replace('\n','')
+    # replace thymine with uracil before translating
+    DNA_sequence = DNA_sequence.replace('T', 'U')
+    protein = ''
+    for i in range(0, len(DNA_sequence), 3) :
+        triplet = DNA_sequence[i : i + 3]
+        if triplet in amino_dictionary.amino_acid.keys() :
+            codon = amino_dictionary.amino_acid[triplet]
+        else:
+            codon = ''
+        protein = protein + codon
+    preview.insert(END, "Polypeptide chain: \n\n" + protein)
+    
 # Open File Button
 open_button = Button(root, text="Open a File", command=open_file)
 open_button.grid(column=0, row=1, sticky='w', padx=10, pady=10)
@@ -87,6 +104,9 @@ submit_file.grid(column=0, row=1, sticky='w', padx=100, pady=10)
 # DNA Frames Options
 frame_options = OptionMenu(root, var, *FRAMES)
 frame_options.grid(column=0, row=1, sticky='w', padx=170, pady=10)
+# RNA to Protein
+translate_DNA = Button(root, text="Translate to Polypeptide", command=translate)
+translate_DNA.grid(column=0, row=1, sticky='w', padx=240, pady=10)
 
 root.mainloop()
 
